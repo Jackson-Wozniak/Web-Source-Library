@@ -1,0 +1,8 @@
+.idea/
+.mvn/
+src/main/resources/application.properties
+Backend.iml
+HELP.md
+mvnw
+mvnw.cmd
+target/
