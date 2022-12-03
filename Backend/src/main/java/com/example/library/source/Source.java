@@ -17,51 +17,41 @@ import java.util.List;
 @NoArgsConstructor
 public class Source {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
-    @JsonIgnore
-    private User user;
+    @EmbeddedId
+    private SourceId sourceId;
 
     @Column(name = "title")
     private String title;
-
-    @Column(name = "link")
-    private String link;
 
     @Column(name = "description")
     private String description;
 
     @ElementCollection
-    @CollectionTable(name = "all_tags", joinColumns = @JoinColumn(name = "tag"))
-    @Column(name = "tags")
+    @CollectionTable(name = "all_tags", joinColumns = {@JoinColumn(name = "user"), @JoinColumn(name = "link")})
+//    @Column(name = "tags")
     private List<String> tags;
 
     public Source(User user, String title, String link, String description, List<String> tags) {
+        this.sourceId = new SourceId(user, link);
         this.title = title;
-        this.link = link;
         this.description = description;
         this.tags = tags;
     }
 
     public Source(User user, SourceRequest sourceRequest){
-        this.user = user;
+        this.sourceId = new SourceId(user, sourceRequest.getLink());
         this.title = sourceRequest.getTitle();
-        this.link = sourceRequest.getLink();
         this.description = sourceRequest.getDescription();
         this.tags = sourceRequest.getTags();
     }
 
-    public void addTag(String tag){
-        if(!this.tags.contains(tag)){
-            this.tags.add(tag);
-        }
-    }
-
-    public void removeTag(String tag){
-        this.tags.remove(tag);
-    }
+//    public void addTag(String tag){
+//        if(!this.tags.contains(tag)){
+//            this.tags.add(tag);
+//        }
+//    }
+//
+//    public void removeTag(String tag){
+//        this.tags.remove(tag);
+//    }
 }
