@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/v1/sources")
@@ -19,13 +20,15 @@ public class SourceController {
     private final RegistrationService registrationService;
 
     @RequestMapping
-    public List<Source> getAllSourcesByUser(@RequestParam("token") String token){
+    public List<SourceDto> getAllSourcesByUser(@RequestParam("token") String token){
         User user = registrationService.confirmToken(token);
-        return sourceService.getAllSourcesByUser(user.getUsername());
+        return sourceService.getAllSourcesByUser(user.getUsername()).stream()
+                .map(SourceDto::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping(value = "/save")
-    public void getAllSourcesByUser(@RequestParam("token") String token, @RequestBody SourceRequest sourceRequest){
+    public void saveSourceToUser(@RequestParam("token") String token, @RequestBody SourceRequest sourceRequest){
         System.out.println(sourceRequest.toString());
         User user = registrationService.confirmToken(token);
         sourceService.saveSource(new Source(user, sourceRequest));

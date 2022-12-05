@@ -27,7 +27,7 @@ public class Source {
     private String description;
 
     @ElementCollection
-    @CollectionTable(name = "all_tags", joinColumns = {@JoinColumn(name = "user"), @JoinColumn(name = "link")})
+    @CollectionTable(name = "all_tags", joinColumns = {@JoinColumn(name = "link"), @JoinColumn(name = "username")})
 //    @Column(name = "tags")
     private List<String> tags;
 

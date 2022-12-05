@@ -17,7 +17,6 @@ public class SourceId implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    @JsonIgnore
     private User user;
 
     @Column(name = "link", nullable = false)
