@@ -21,6 +21,7 @@ public class UserController {
 
     @RequestMapping(value = "/tags")
     public List<String> getTagsByUser(@RequestParam("token") String token){
+        //confirming token returns User associated with the given token
         return registrationService.confirmToken(token).getTags();
     }
 }

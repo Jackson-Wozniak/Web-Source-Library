@@ -4,6 +4,8 @@ import com.example.library.user.user.User;
 import com.example.library.user.user.registration.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,9 +30,35 @@ public class SourceController {
     }
 
     @PostMapping(value = "/save")
-    public void saveSourceToUser(@RequestParam("token") String token, @RequestBody SourceRequest sourceRequest){
-        System.out.println(sourceRequest.toString());
+    public ResponseEntity<?> saveSource(@RequestParam("token") String token, @RequestBody SourceRequest sourceRequest){
         User user = registrationService.confirmToken(token);
-        sourceService.saveSource(new Source(user, sourceRequest));
+        try{
+            sourceService.saveSource(new Source(user, sourceRequest));
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("New Source Saved");
+    }
+
+    @PostMapping(value = "/update")
+    public ResponseEntity<?> updateSource(@RequestParam("token") String token, @RequestBody SourceRequest sourceRequest){
+        User user = registrationService.confirmToken(token);
+        try{
+            sourceService.updateSource(new Source(user, sourceRequest));
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Source Updated");
+    }
+
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<?> deleteSource(@RequestParam("token") String token, @RequestBody SourceRequest sourceRequest){
+        User user = registrationService.confirmToken(token);
+        try{
+            sourceService.deleteSource(new Source(user, sourceRequest));
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Source Deleted");
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface SourceRepository extends JpaRepository<Source, Long> {
+public interface SourceRepository extends JpaRepository<Source, SourceId> {
 
     @Query(value = "select * from source where user=:username", nativeQuery = true)
     List<Source> findSourceByName(String username);
