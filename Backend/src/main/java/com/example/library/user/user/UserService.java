@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
@@ -24,6 +26,16 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return (UserDetails) userRepository.findById(username).orElseThrow(() -> new RuntimeException("No User"));
+    }
+
+    public void addTagToUser(User user, String tag){
+        user.addTag(tag);
+        userRepository.save(user);
+    }
+
+    public void addTagsToUser(User user, List<String> tags){
+        user.addTags(tags);
+        userRepository.save(user);
     }
 
     public String signUpUser(User user) {

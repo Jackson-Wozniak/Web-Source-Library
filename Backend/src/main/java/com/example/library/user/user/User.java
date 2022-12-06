@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Source> sources;
 
+    @ElementCollection
+    @CollectionTable(name = "user_tags", joinColumns = @JoinColumn(name = "username"))
+    private List<String> tags;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean locked = false;
@@ -40,6 +45,25 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.userRole = UserRole.USER;
+        this.tags = new ArrayList<>();
+    }
+
+    public void addTag(String tag){
+        if(!this.tags.contains(tag)){
+            this.tags.add(tag);
+        }
+    }
+
+    public void addTags(List<String> tags){
+        tags.forEach(tag -> {
+            if(!this.tags.contains(tag)){
+                this.tags.add(tag);
+            }
+        });
+    }
+
+    public void removeTag(String tag){
+        this.tags.remove(tag);
     }
 
     @Override
