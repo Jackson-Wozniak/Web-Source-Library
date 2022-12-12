@@ -15,10 +15,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class SourceId implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
-    private User user;
+    @Column(name = "username", nullable = false)
+    private String username;
 
-    @Column(name = "link", nullable = false)
-    private String link;
+    @Column(name = "title", nullable = false)
+    private String title;
 }

@@ -1,44 +1,43 @@
 package com.example.library.source;
 
 import com.example.library.user.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "source")
 @Table(name = "source")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class Source {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Source implements Serializable {
 
     @EmbeddedId
     private SourceId sourceId;
 
-    @Column(name = "title")
-    private String title;
-
     @Column(name = "description")
     private String description;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
+    @JsonIgnore
+    private User user;
+
     @ElementCollection
-    @CollectionTable(name = "all_tags", joinColumns = {@JoinColumn(name = "link"), @JoinColumn(name = "username")})
-//    @Column(name = "tags")
+    @CollectionTable(name = "all_tags", joinColumns = {@JoinColumn(name = "title"), @JoinColumn(name = "username")})
     private List<String> tags;
 
-    public Source(User user, String title, String link, String description, List<String> tags) {
-        this.sourceId = new SourceId(user, link);
-        this.title = title;
-        this.description = description;
-        this.tags = tags;
-    }
-
     public Source(User user, SourceRequest sourceRequest){
-        this.sourceId = new SourceId(user, sourceRequest.getLink());
-        this.title = sourceRequest.getTitle();
+        this.user = user;
+        this.sourceId = new SourceId(user.getUsername(), sourceRequest.getTitle());
         this.description = sourceRequest.getDescription();
         this.tags = sourceRequest.getTags();
     }

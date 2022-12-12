@@ -5,62 +5,42 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @AllArgsConstructor
 public class SourceService {
 
     @Autowired
-    private final SourceRepository sourceRepository;
+    private final WebSourceRepository sourceRepository;
     @Autowired
     private final UserService userService;
 
-    public void saveSource(Source source){
+    public void saveSource(WebSource webSource){
         //Add tags from new source to user tags if they don't already exist
         //User list of tags allows for filtering of sources on UI
-        userService.addTagsToUser(source.getSourceId().getUser(), source.getTags());
-        if(!sourceValidated(source)){
+        userService.addTagsToUser(webSource.getUser(), webSource.getTags());
+        if(!sourceEmpty(webSource)){
             throw new SourceException("Source cannot be created: duplicate source");
         }
-        sourceRepository.save(source);
+        sourceRepository.save(webSource);
     }
 
-    public void updateSource(Source source){
-        //Add tags from new source to user tags if they don't already exist
-        //User list of tags allows for filtering of sources on UI
-        userService.addTagsToUser(source.getSourceId().getUser(), source.getTags());
-        if(sourceRepository.findById(source.getSourceId()).isEmpty()){
+    public void updateSource(WebSource webSource){
+        userService.addTagsToUser(webSource.getUser(), webSource.getTags());
+        if(sourceEmpty(webSource)){
             throw new SourceException("Source cannot be updated: cannot find source");
         }
-        sourceRepository.save(source);
+        sourceRepository.save(webSource);
     }
 
-    public void deleteSource(Source source){
-        if(sourceRepository.findById(source.getSourceId()).isEmpty()){
+    public void deleteSource(WebSource source){
+        if(sourceEmpty(source)){
             throw new SourceException("Source cannot be updated: cannot find source");
         }
         sourceRepository.delete(source);
     }
 
-    public List<Source> getAllSourcesByUser(String username){
-        return sourceRepository.findSourceByName(username);
-    }
-
-    public List<Source> getAllSourcesByTag(String tag, String username){
-        return sourceRepository.findSourceByName(username).stream()
-                .filter(source -> source.getTags().contains(tag))
-                .collect(Collectors.toList());
-    }
-
-    public List<Source> getAllSourcesByTag(List<String> tags, String username){
-        List<Source> sources = sourceRepository.findAll();
-        return null;
-    }
-
     //returns true if source does not already exist, false if it does
-    public boolean sourceValidated(Source source){
+    public boolean sourceEmpty(WebSource source){
         return sourceRepository.findById(source.getSourceId()).isEmpty();
     }
 }

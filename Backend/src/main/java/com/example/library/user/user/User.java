@@ -1,6 +1,8 @@
 package com.example.library.user.user;
 
 import com.example.library.source.Source;
+import com.example.library.source.WebSource;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +31,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Source> sources;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<WebSource> sources;
 
     @ElementCollection
     @CollectionTable(name = "user_tags", joinColumns = @JoinColumn(name = "username"))
