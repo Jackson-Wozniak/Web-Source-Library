@@ -34,8 +34,8 @@ public class ConfirmationTokenService {
         logger.info(confirmationTokenRepository.findDeletedRowCount() + " tokens purged");
     }
 
-    public int setConfirmedAt(String token) {
-        return confirmationTokenRepository.updateConfirmedAt(
+    public void setConfirmedAt(String token) {
+        confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
     }
 
@@ -44,7 +44,7 @@ public class ConfirmationTokenService {
         return new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
+                LocalDateTime.now().plusMinutes(60),
                 user
         );
     }
