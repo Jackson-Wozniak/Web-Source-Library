@@ -1,5 +1,8 @@
-package com.example.library.source;
+package com.example.library.source.controller;
 
+import com.example.library.source.request.BookSourceRequest;
+import com.example.library.source.service.BookSourceService;
+import com.example.library.source.entity.BookSource;
 import com.example.library.user.user.User;
 import com.example.library.user.user.registration.RegistrationService;
 import lombok.AllArgsConstructor;
@@ -9,12 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/v1/sources/web")
+@RequestMapping(value = "/api/v1/sources/book")
 @AllArgsConstructor
-public class WebSourceController {
+public class BookSourceController {
 
     @Autowired
-    private final WebSourceService webSourceService;
+    private final BookSourceService bookSourceService;
     @Autowired
     private final RegistrationService registrationService;
 
@@ -22,17 +25,17 @@ public class WebSourceController {
     public ResponseEntity<?> getAllWebSourcesByUser(@RequestParam("token") String token){
         try{
             User user = registrationService.confirmToken(token);
-            return ResponseEntity.ok(user.getWebSources());
+            return ResponseEntity.ok(user.getBookSources());
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<?> saveWebSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
+    public ResponseEntity<?> saveWebSource(@RequestParam("token") String token, @RequestBody BookSourceRequest sourceRequest){
         try{
             User user = registrationService.confirmToken(token);
-            webSourceService.saveWebSource(new WebSource(user, webSourceRequest));
+            bookSourceService.saveBookSource(new BookSource(user, sourceRequest));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -40,10 +43,10 @@ public class WebSourceController {
     }
 
     @PostMapping(value = "/update")
-    public ResponseEntity<?> updateWebSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
+    public ResponseEntity<?> updateWebSource(@RequestParam("token") String token, @RequestBody BookSourceRequest sourceRequest){
         User user = registrationService.confirmToken(token);
         try{
-            webSourceService.updateWebSource(new WebSource(user, webSourceRequest));
+            bookSourceService.updateBookSource(new BookSource(user, sourceRequest));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -51,10 +54,10 @@ public class WebSourceController {
     }
 
     @DeleteMapping(value = "/delete")
-    public ResponseEntity<?> deleteWebSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
+    public ResponseEntity<?> deleteWebSource(@RequestParam("token") String token, @RequestBody BookSourceRequest sourceRequest){
         User user = registrationService.confirmToken(token);
         try{
-            webSourceService.deleteWebSource(new WebSource(user, webSourceRequest));
+            bookSourceService.deleteBookSource(new BookSource(user, sourceRequest));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }

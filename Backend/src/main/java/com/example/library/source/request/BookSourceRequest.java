@@ -1,4 +1,4 @@
-package com.example.library.source;
+package com.example.library.source.request;
 
 import lombok.Getter;
 import lombok.Setter;

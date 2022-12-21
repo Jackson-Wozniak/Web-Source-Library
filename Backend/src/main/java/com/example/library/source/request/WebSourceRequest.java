@@ -1,9 +1,8 @@
-package com.example.library.source;
+package com.example.library.source.request;
 
-import lombok.AllArgsConstructor;
+import com.example.library.source.request.SourceRequest;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
 

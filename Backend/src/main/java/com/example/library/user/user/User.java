@@ -1,7 +1,7 @@
 package com.example.library.user.user;
 
-import com.example.library.source.BookSource;
-import com.example.library.source.WebSource;
+import com.example.library.source.entity.BookSource;
+import com.example.library.source.entity.WebSource;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

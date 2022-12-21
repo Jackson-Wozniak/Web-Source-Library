@@ -1,5 +1,6 @@
-package com.example.library.source;
+package com.example.library.source.entity;
 
+import com.example.library.source.request.SourceRequest;
 import com.example.library.user.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
-package com.example.library.source;
+package com.example.library.source.entity;
 
+import com.example.library.source.request.WebSourceRequest;
 import com.example.library.user.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class WebSource extends Source{
+public class WebSource extends Source {
 
     @Column(name = "link")
     private String link;

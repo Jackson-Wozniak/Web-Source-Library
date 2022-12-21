@@ -1,5 +1,8 @@
-package com.example.library.source;
+package com.example.library.source.service;
 
+import com.example.library.source.entity.WebSource;
+import com.example.library.source.exception.SourceException;
+import com.example.library.source.repository.WebSourceRepository;
 import com.example.library.user.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
