@@ -7,40 +7,40 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class SourceService {
+public class WebSourceService {
 
     @Autowired
-    private final WebSourceRepository sourceRepository;
+    private final WebSourceRepository webSourceRepository;
     @Autowired
     private final UserService userService;
 
-    public void saveSource(WebSource webSource){
+    public void saveWebSource(WebSource webSource){
         //Add tags from new source to user tags if they don't already exist
-        //User list of tags allows for filtering of sources on UI
+        //User list of tags allows for filtering of webSources on UI
         userService.addTagsToUser(webSource.getUser(), webSource.getTags());
-        if(!sourceEmpty(webSource)){
+        if(!webSourceEmpty(webSource)){
             throw new SourceException("Source cannot be created: duplicate source");
         }
-        sourceRepository.save(webSource);
+        webSourceRepository.save(webSource);
     }
 
-    public void updateSource(WebSource webSource){
+    public void updateWebSource(WebSource webSource){
         userService.addTagsToUser(webSource.getUser(), webSource.getTags());
-        if(sourceEmpty(webSource)){
+        if(webSourceEmpty(webSource)){
             throw new SourceException("Source cannot be updated: cannot find source");
         }
-        sourceRepository.save(webSource);
+        webSourceRepository.save(webSource);
     }
 
-    public void deleteSource(WebSource source){
-        if(sourceEmpty(source)){
+    public void deleteWebSource(WebSource source){
+        if(webSourceEmpty(source)){
             throw new SourceException("Source cannot be updated: cannot find source");
         }
-        sourceRepository.delete(source);
+        webSourceRepository.delete(source);
     }
 
     //returns true if source does not already exist, false if it does
-    public boolean sourceEmpty(WebSource source){
-        return sourceRepository.findById(source.getSourceId()).isEmpty();
+    public boolean webSourceEmpty(WebSource source){
+        return webSourceRepository.findById(source.getSourceId()).isEmpty();
     }
 }

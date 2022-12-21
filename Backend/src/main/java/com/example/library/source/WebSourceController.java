@@ -8,33 +8,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(value = "/api/v1/sources")
+@RequestMapping(value = "/api/v1/sources/web")
 @AllArgsConstructor
-public class SourceController {
+public class WebSourceController {
 
     @Autowired
-    private final SourceService sourceService;
+    private final WebSourceService webSourceService;
     @Autowired
     private final RegistrationService registrationService;
 
     @RequestMapping
-    public ResponseEntity<?> getAllSourcesByUser(@RequestParam("token") String token){
+    public ResponseEntity<?> getAllWebSourcesByUser(@RequestParam("token") String token){
         try{
             User user = registrationService.confirmToken(token);
-            return ResponseEntity.ok(user.getSources());
+            return ResponseEntity.ok(user.getWebSources());
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<?> saveSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
+    public ResponseEntity<?> saveWebSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
         try{
             User user = registrationService.confirmToken(token);
-            sourceService.saveSource(new WebSource(user, webSourceRequest));
+            webSourceService.saveWebSource(new WebSource(user, webSourceRequest));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -42,10 +40,10 @@ public class SourceController {
     }
 
     @PostMapping(value = "/update")
-    public ResponseEntity<?> updateSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
+    public ResponseEntity<?> updateWebSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
         User user = registrationService.confirmToken(token);
         try{
-            sourceService.updateSource(new WebSource(user, webSourceRequest));
+            webSourceService.updateWebSource(new WebSource(user, webSourceRequest));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -53,10 +51,10 @@ public class SourceController {
     }
 
     @DeleteMapping(value = "/delete")
-    public ResponseEntity<?> deleteSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
+    public ResponseEntity<?> deleteWebSource(@RequestParam("token") String token, @RequestBody WebSourceRequest webSourceRequest){
         User user = registrationService.confirmToken(token);
         try{
-            sourceService.deleteSource(new WebSource(user, webSourceRequest));
+            webSourceService.deleteWebSource(new WebSource(user, webSourceRequest));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }

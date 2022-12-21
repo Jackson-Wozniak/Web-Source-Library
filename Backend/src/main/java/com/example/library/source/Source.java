@@ -11,6 +11,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+/*
+potential source types:
+    Web Source
+    Book Source
+    Video Source
+ */
+
 @Entity(name = "source")
 @Table(name = "source")
 @Getter

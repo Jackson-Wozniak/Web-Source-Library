@@ -1,6 +1,6 @@
 package com.example.library.user.user;
 
-import com.example.library.source.Source;
+import com.example.library.source.BookSource;
 import com.example.library.source.WebSource;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,11 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<WebSource> sources;
+    private List<WebSource> webSources;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<BookSource> bookSources;
 
     @ElementCollection
     @CollectionTable(name = "user_tags", joinColumns = @JoinColumn(name = "username"))
